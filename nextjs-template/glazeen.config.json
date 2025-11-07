@@ -1,0 +1,60 @@
+{
+  "name": "nextjs-app",
+  "description": "nextjs standard boilerplate with db and docker",
+  "prompts": [
+    {
+      "key": "project_name",
+      "type": "input",
+      "message": "Inserisci il nome del tuo progetto:",
+      "default": "new-nextjs-app"
+    },
+    {
+      "key": "project_description",
+      "type": "input",
+      "message": "Inserisci una breve descrizione del progetto:",
+      "default": "new nextjs app"
+    },
+    {
+      "key": "db_type",
+      "type": "list",
+      "message": "Quale database vuoi configurare?",
+      "choices": ["Postgres", "MongoDB", "SQLite", "None"]
+    },
+    {
+      "key": "docker_port",
+      "type": "input",
+      "message": "Su quale porta vuoi esporre l'app Docker?",
+      "default": "3000"
+    }
+  ],
+  "post_create": [
+    {
+      "command": "pnpm install",
+      "message": "Installazione delle dipendenze (pnpm install)..."
+    },
+    {
+      "command": "git init",
+      "message": "Inizializzazione di Git..."
+    },
+    {
+      "condition": "db_type != 'None'",
+      "command": "npx prisma generate",
+      "message": "Genero il client Prisma..."
+    },
+    {
+      "condition": "db_type == 'Postgres'",
+      "command": "pnpm exec prisma init --datasource-provider postgresql",
+      "message": "Setup database Postgres..."
+    },
+    {
+      "condition": "db_type == 'MongoDB'",
+      "command": "pnpm exec prisma init --datasource-provider mongodb",
+      "message": "Setup database MongoDB..."
+    },
+    {
+      "condition": "db_type == 'SQLite'",
+      "command": "pnpm exec prisma init --datasource-provider sqlite",
+      "message": "Setup database SQLite..."
+    }
+  ]
+}
