@@ -12,11 +12,11 @@ RUN pnpm install --frozen-lockfile
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
-ARG DATABASE_URL
-ENV DATABASE_URL=${DATABASE_URL}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+{{#if (eq use_db "Yes")}}
 RUN pnpm prisma generate && pnpm build
+{{/if}}
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -31,8 +31,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+{{#if (eq use_db "Yes")}}
 # Copy Prisma schema and migrations
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+{{/if}}
 
 USER nextjs
 
@@ -40,8 +42,10 @@ EXPOSE {{docker_port}}
 
 ENV PORT {{docker_port}}
 
+{{#if (eq use_db "Yes")}}
 # Set storage path environment variable
 ENV STORAGE_PATH=/app/storage
 
 # Run migrations before starting the app using pnpm
-CMD ["sh", "-c", "pnpm dlx prisma migrate deploy && node server.js"]
+CMD ["sh", "-c", "pnpm dlx prisma migrate deploy"]
+{{/if}}

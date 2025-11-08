@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   {{project_name}}-app:
     container_name: {{project_name}}-app
@@ -15,7 +13,7 @@ services:
       - ./storage:/app/storage
     ports:
       - "{{docker_port}}:{{docker_port}}"
-    {{#if (neq db_type "None")}}
+    {{#if (eq use_db "Yes")}}
     depends_on:
       - {{project_name}}-db
     {{/if}}
@@ -23,47 +21,22 @@ services:
       - app-network
     restart: unless-stopped
 
-  {{#if (eq db_type "Postgres")}}
+  {{#if (eq use_db "Yes")}}
   {{project_name}}-db:
-    image: postgres:15-alpine
+    image: # select your image
     container_name: {{project_name}}-db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: {{project_name}}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    environment: # set your environment variables
+
+    volumes: # set your volumes
+
     restart: unless-stopped
     networks:
       - app-network
-    ports:
-      - "5432:5432"
-    {{/if}}
-
-
-  # Blocco per MongoDB
-  {{#if (eq db_type "MongoDB")}}
-  {{project_name}}-db:
-    image: mongo:latest
-    container_name: {{project_name}}-db
-    restart: always
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=example
-    volumes:
-      - mongo_data:/data/db
-    ports:
-      - "27017:27017"
+    ports: # set your ports
   {{/if}}
 
-{{#if (neq db_type "None")}}
-volumes:
-  {{#if (eq db_type "Postgres")}}
-  postgres_data:
-  {{/if}}
-  {{#if (eq db_type "MongoDB")}}
-  mongo_data:
-  {{/if}}
+{{#if (eq use_db "Yes")}}
+volumes: # set your volumes
 {{/if}}
 
 networks:
