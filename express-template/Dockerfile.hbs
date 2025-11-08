@@ -1,0 +1,36 @@
+# syntax=docker/dockerfile:1
+FROM node:20-alpine AS base
+
+WORKDIR /usr/src/app
+
+# Enable pnpm via corepack
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Copy manifest files first for better caching
+COPY package.json* ./
+COPY pnpm-lock.yaml* ./
+
+# Install dependencies (fallback if lockfile not present yet)
+RUN pnpm install --frozen-lockfile || pnpm install
+
+# Copy source
+COPY tsconfig.json ./
+COPY src ./src
+{{#if (eq use_db "Yes")}}
+RUN pnpm prisma generate && pnpm build
+{{/if}}
+
+# Build TypeScript
+RUN pnpm build
+
+EXPOSE {{docker_port}}
+
+{{#if (eq use_db "Yes")}}
+# Set storage path environment variable
+ENV STORAGE_PATH=/app/storage
+
+# Run migrations before starting the app using pnpm
+CMD ["sh", "-c", "pnpm dlx prisma migrate deploy"]
+{{/if}}
+
+CMD ["node", "dist/index.js"]

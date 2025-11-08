@@ -1,0 +1,40 @@
+{
+  "name": "nextjs-app",
+  "description": "nextjs standard boilerplate with db and docker",
+  "prompts": [
+    {
+      "key": "project_name",
+      "type": "text",
+      "message": "Insert your Project Name:",
+      "default": "new-nextjs-app"
+    },
+    {
+      "key": "project_description",
+      "type": "text",
+      "message": "Insert a brief description of your project:",
+      "default": "new nextjs app"
+    },
+    {
+      "key": "use_db",
+      "type": "confirm",
+      "message": "Do you want to use Prisma?",
+      "choices": {
+        "Yes": "pnpm exec prisma init",
+        "No": ""
+      },
+      "response_message": "Initializing Prisma..."
+    },
+    {
+      "key": "docker_port",
+      "type": "text",
+      "message": "On which port do you want to expose the Docker app?",
+      "default": "3000"
+    }
+  ],
+  "post_create": [
+    {
+      "command": "pnpm install",
+      "response_message": "Installing dependencies (pnpm install)..."
+    }
+  ]
+}
