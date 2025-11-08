@@ -1,6 +1,6 @@
 {
-  "name": "nextjs-app",
-  "description": "nextjs standard boilerplate with db and docker",
+  "name": "express-app",
+  "description": "express standard boilerplate with db and docker",
   "prompts": [
     {
       "key": "project_name",
