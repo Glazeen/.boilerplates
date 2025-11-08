@@ -6,13 +6,13 @@
       "key": "project_name",
       "type": "text",
       "message": "Insert your Project Name:",
-      "default": "new-nextjs-app"
+      "default": "new-express-app"
     },
     {
       "key": "project_description",
       "type": "text",
       "message": "Insert a brief description of your project:",
-      "default": "new nextjs app"
+      "default": "new express app"
     },
     {
       "key": "use_db",
