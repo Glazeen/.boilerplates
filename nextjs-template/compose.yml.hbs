@@ -1,0 +1,44 @@
+services:
+  {{project_name}}-app:
+    container_name: {{project_name}}-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - .env
+      - .env.local
+    volumes:
+      - ./storage:/app/storage
+    ports:
+      - "{{docker_port}}:{{docker_port}}"
+    {{#if (eq use_db "Yes")}}
+    depends_on:
+      - {{project_name}}-db
+    {{/if}}
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  {{#if (eq use_db "Yes")}}
+  {{project_name}}-db:
+    image: # select your image
+    container_name: {{project_name}}-db
+    environment: # set your environment variables
+
+    volumes: # set your volumes
+
+    restart: unless-stopped
+    networks:
+      - app-network
+    ports: # set your ports
+  {{/if}}
+
+{{#if (eq use_db "Yes")}}
+volumes: # set your volumes
+{{/if}}
+
+networks:
+  app-network:
+    driver: bridge
