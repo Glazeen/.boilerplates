@@ -1,0 +1,42 @@
+services:
+  {{project_name}}-api:
+    build: .
+    container_name: {{project_name}}-api
+    environment:
+      - NODE_ENV=development
+      - PORT={{docker_port}}
+    ports:
+      - "{{docker_port}}:{{docker_port}}"
+    {{#if (eq use_db "Yes")}}
+    depends_on:
+      - {{project_name}}-db
+    {{/if}}
+    volumes:
+      - .:/usr/src/app
+      # Keep container node_modules separate from host to avoid permission mismatches
+      - /usr/src/app/node_modules
+    command: pnpm dev
+    networks:
+      - app-network
+
+  {{#if (eq use_db "Yes")}}
+  {{project_name}}-db:
+    image: # select your image
+    container_name: {{project_name}}-db
+    environment: # set your environment variables
+
+    volumes: # set your volumes
+
+    restart: unless-stopped
+    networks:
+      - app-network
+    ports: # set your ports
+  {{/if}}
+
+{{#if (eq use_db "Yes")}}
+volumes: # set your volumes
+{{/if}}
+
+networks:
+  app-network:
+    driver: bridge
