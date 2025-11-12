@@ -26,24 +26,24 @@ Now that your project is set up, here are a few things you can do to get started
 
 ## Available Scripts
 
--   `pnpm test`: Runs tests for the application.
--   `pnpm build`: Compiles the TypeScript code to JavaScript.
--   `pnpm start`: Starts the compiled application.
--   `pnpm dev`: Starts the development server with hot-reloading.
+- `pnpm test`: Runs tests for the application.
+- `pnpm build`: Compiles the TypeScript code to JavaScript.
+- `pnpm start`: Starts the compiled application.
+- `pnpm dev`: Starts the development server with hot-reloading.
 
 ## API Endpoints
 
 The API is versioned and available under the `/api/v1` prefix.
 
--   `GET /api/v1/health`: Returns the health status of the application.
+- `GET /api/v1/health`: Returns the health status of the application.
 
 ## Docker
 
 This template includes Docker support for containerizing the application.
 
--   `Dockerfile.hbs`: A template for the Dockerfile.
--   `compose.yml.hbs`: A template for the Docker Compose file.
--   `.dockerignore`: Specifies which files to ignore when building the Docker image.
+- `Dockerfile.hbs`: A template for the Dockerfile.
+- `compose.yml.hbs`: A template for the Docker Compose file.
+- `.dockerignore`: Specifies which files to ignore when building the Docker image.
 
 To build and run the Docker container, you will need to have [Docker](https://www.docker.com/) installed.
 
