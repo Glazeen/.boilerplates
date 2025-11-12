@@ -14,7 +14,7 @@ Now that your project is set up, here are a few things you can do to get started
     pnpm dev
     ```
 
-    Your application will be running at `http://localhost:3000`.
+    Your application will be running at `http://localhost:3000`!
 
 2.  **Explore the project structure:**
 
