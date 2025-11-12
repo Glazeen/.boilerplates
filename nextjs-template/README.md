@@ -1,36 +1,58 @@
-This is my [Next.js](https://nextjs.org) template project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Template
 
-## Getting Started
+This is a template for creating Next.js applications.
 
-First, run the development server:
+Your project has been successfully created!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## What's Next?
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Now that your project is set up, here are a few things you can do to get started:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1.  **Start the development server:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    ```bash
+    pnpm dev
+    ```
 
-## Learn More
+    Your application will be running at `http://localhost:3000`.
 
-To learn more about Next.js, take a look at the following resources:
+2.  **Explore the project structure:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    The main application logic is located in the `app` directory. The API routes are defined in `app/api`, and the main application setup is in `app/layout.tsx` and `app/page.tsx`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3.  **Review the available scripts:**
 
-## Deploy on Vercel
+    Check out the "Available Scripts" section below to see what commands you can run.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Available Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-   `pnpm dev`: Starts the development server.
+-   `pnpm build`: Builds the application for production.
+-   `pnpm start`: Starts the production server.
+-   `pnpm lint`: Lints the codebase.
+
+## Authentication
+
+This template comes with NextAuth.js pre-configured. The authentication routes are handled by the `app/api/auth/[...nextauth]/route.ts` file.
+
+## Docker
+
+This template includes Docker support for containerizing the application.
+
+-   `Dockerfile.hbs`: A template for the Dockerfile.
+-   `compose.yml.hbs`: A template for the Docker Compose file.
+-   `.dockerignore`: Specifies which files to ignore when building the Docker image.
+
+To build and run the Docker container, you will need to have [Docker](https://www.docker.com/) installed.
+
+1.  **Build the Docker image:**
+
+    ```bash
+    docker build -t your-project-name .
+    ```
+
+2.  **Run the Docker container:**
+
+    ```bash
+    docker run -p 3000:3000 your-project-name
+    ```
