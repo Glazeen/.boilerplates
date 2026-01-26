@@ -1,0 +1,26 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "^.*package\\.json\\.hbs$"
+      ],
+      "matchStrings": [
+        "\"(?<depName>[^\"]+)\"\\s*:\\s*\"(?<currentValue>\\^?[0-9]+\\.[0-9]+\\.[0-9]+[^\"]*)\""
+      ],
+      "datasourceTemplate": "pnpm",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["regex"],
+      "matchPackagePatterns": ["*"],
+      "enabled": true
+    }
+  ]
+}
