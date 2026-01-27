@@ -6,7 +6,7 @@ Your project has been successfully created!
 
 ## What's Next?
 
-Now that your project is set up, here are a few things you can do to start:
+Now that your project is set up, here are a few things you can do to get started:
 
 1.  **Start the development server:**
 
