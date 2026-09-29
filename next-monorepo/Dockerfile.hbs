@@ -1,0 +1,46 @@
+FROM node:20-alpine AS base
+
+# Install pnpm and turbo
+RUN npm install -g pnpm turbo
+
+FROM base AS builder
+WORKDIR /app
+COPY . .
+RUN turbo prune web --docker
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+WORKDIR /app
+
+# First install dependencies
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/pnpm-lock.yaml* ./
+RUN pnpm install
+
+# Build the project
+COPY --from=builder /app/out/full/ .
+{{#if (eq use_db "Yes")}}
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+{{/if}}
+RUN pnpm turbo build --filter=web...
+
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+
+USER nextjs
+
+EXPOSE {{docker_port}}
+
+ENV PORT {{docker_port}}
+
+CMD ["node", "apps/web/server.js"]

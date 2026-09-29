@@ -1,0 +1,47 @@
+services:
+  {{project_name}}-web:
+    container_name: {{project_name}}-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+      {{#if (eq use_db "Yes")}}
+      args:
+        - DATABASE_URL=${DATABASE_URL}
+      {{/if}}
+    env_file:
+      - .env
+    ports:
+      - "{{docker_port}}:{{docker_port}}"
+    {{#if (eq use_db "Yes")}}
+    depends_on:
+      - {{project_name}}-db
+    {{/if}}
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  {{#if (eq use_db "Yes")}}
+  {{project_name}}-db:
+    image: postgres:16-alpine
+    container_name: {{project_name}}-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: {{project_name}}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - app-network
+  {{/if}}
+
+{{#if (eq use_db "Yes")}}
+volumes:
+  db-data:
+{{/if}}
+
+networks:
+  app-network:
+    driver: bridge

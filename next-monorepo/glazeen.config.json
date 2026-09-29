@@ -1,0 +1,40 @@
+{
+	"name": "next-monorepo",
+	"description": "Next.js monorepo template with Turborepo, shadcn/ui, Tailwind CSS and Prisma",
+	"prompts": [
+		{
+			"key": "project_name",
+			"type": "text",
+			"message": "Insert your Project Name:",
+			"default": "new-next-monorepo"
+		},
+		{
+			"key": "project_description",
+			"type": "text",
+			"message": "Insert a brief description of your project:",
+			"default": "Next.js monorepo template with Turborepo and shadcn/ui"
+		},
+		{
+			"key": "use_db",
+			"type": "confirm",
+			"message": "Do you want to use Prisma?",
+			"choices": {
+				"Yes": "",
+				"No": ""
+			},
+			"response_message": "Configuring Prisma database..."
+		},
+		{
+			"key": "docker_port",
+			"type": "text",
+			"message": "On which port do you want to expose the Docker app?",
+			"default": "3000"
+		}
+	],
+	"post_create": [
+		{
+			"command": "pnpm install",
+			"response_message": "Installing dependencies (pnpm install)..."
+		}
+	]
+}
